@@ -8,7 +8,7 @@ class IllustratorServiceProvider extends ServiceProvider
 {
     public function register()
     {
-
+        $this->app->bind('Illustrator', Illustrator::class);
     }
 
     public function boot()

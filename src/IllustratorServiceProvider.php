@@ -13,6 +13,6 @@ class IllustratorServiceProvider extends ServiceProvider
 
     public function boot()
     {
-
+        // todo add config
     }
 }

@@ -40,8 +40,22 @@ trait DirCreator
      */
     public function setDir(string $directory)
     {
-        $this->dir = $directory;
+        $this->dir = $this->refactorDir($directory);
         return $this;
+    }
+
+    /**
+     * It checks that the directory has the correct format and if there
+     * is no / at the end, it adds / to the end to avoid errors.
+     *
+     * @param string $directory
+     * @return string
+     */
+    protected function refactorDir(string $directory): string
+    {
+        if (str_ends_with($directory, '/'))
+            return substr($directory,0,-1);
+        return $directory;
     }
 
 }

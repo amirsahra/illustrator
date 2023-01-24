@@ -5,7 +5,6 @@ namespace Amirsahra\Illustrator;
 use Amirsahra\Illustrator\Core\Traits\DirCreator;
 use Amirsahra\Illustrator\Core\Traits\Disk;
 use Amirsahra\Illustrator\Core\Traits\NameCreator;
-use Amirsahra\Illustrator\Core\Traits\RefactorPath;
 use Amirsahra\Illustrator\Exception\InvalidNameException;
 use Amirsahra\Illustrator\Exception\NotFoundConfigKeyException;
 use Illuminate\Http\UploadedFile;

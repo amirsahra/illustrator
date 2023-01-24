@@ -53,7 +53,7 @@ trait NameCreator
      */
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = $this->refactorPath($name);
         return $this;
     }
 

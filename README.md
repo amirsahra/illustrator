@@ -37,7 +37,8 @@ Illustrator::setDisk('public')
     ->upload($request->imageFieldName);
 ```
 
-Updating images is also very simple as above, and instead of the upload method, we use update with the parameter of the complete directory of the image that we want to update.
+Updating images is also very simple as above, and instead of the upload method, we use update with the parameter of the
+complete directory of the image that we want to update.
 
 ```php
 Illustrator::setDisk('public')
@@ -46,6 +47,37 @@ Illustrator::setDisk('public')
     ->update($request->imageFieldName,$imagePath);
 ```
 
+### Disks
 
+According to the capabilities of Laravel, we have two types of storage disks. `public` and `local` If we want to access an
+image with a URL (such as a user's image, banner, etc.), its disk must be `public`, and if we want an image that can only
+be downloaded securely (such as invoices, transaction lists, and any image that security is) its disk must be `local`.
 
+## Installation
 
+- You can install the package using composer:
+
+```php
+composer require amirsahra/illustrator
+```
+
+- You need to add the config file to the configs directory. Publish the configuration file:
+
+```php
+php artisan vendor:publish --tag="illustrator"
+```
+
+### WARNING
+
+If this command did not publish any files, chances are, the Laratrust service provider hasn't been registered. Try
+clearing your configuration cache.
+
+```php
+php artisan config:clear
+```
+
+And
+
+```php
+composer dump-autoload
+```

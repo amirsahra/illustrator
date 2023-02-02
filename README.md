@@ -81,3 +81,79 @@ And
 ```php
 composer dump-autoload
 ```
+
+## Usage
+
+- ### configs
+In the configuration file, the activation of the options and their default values are determined.
+
+Let's start by config
+  You edit the config file related to the package that is located in the config directory named illustrator with the publish command (which is explained in the installation section).
+
+  
+This is the default value, and if needed,
+
+| key                                  | value (default)    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|:-------------------------------------|:-------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `disk`                               | `public`           | You can choose the disk you want.<br/>This is the default value, and if needed,<br/>you can choose the desired disk when saving the image.<br/>Supported Drivers: "local", "public"                                                                                                                                                                                                                                                                                                                                                          |
+| `image_path.dir`                     | `illustrator/imgs` | Default directory to save images                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `image_path.random_string.length`    | `10`               | If you want the name of the image to be created by default and include a random string, set this feature to active and set the string length.                                                                                                                                                                                                                                                                                                                                                                                                |
+| `image_path.random_string.is_active` | `true`             | You can enable and disable this feature.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `image_path.prefix.value`            | `pre`              | If you want the name of the image to be created by default and include a prefix, set this feature to active and set the prefix value.                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `image_path.prefix.is_active`        | `true`             | You can enable and disable this feature.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `image_path.postfix.value`           | `po`               | If you want the name of the image to be created by default and include a postfix, set this feature to active and set the postfix value.                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `image_path.postfix.is_active`       | `true`             | You can enable and disable this feature.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+- ### Facade
+You will easily access it with the help of Facade Package.
+Just use it in the use class.
+```php
+use Amirsahra\Illustrator\Facade\Illustrator;
+
+Illustrator::upload($request->imageFieldName);
+```
+
+- ### Upload
+This method alone is enough to upload the image. Other values, including directory, name, prefix, and extension, if enabled, are taken from the default value set in the configuration.
+
+The input parameter of the method is of type UploadedFile and it is taken from the sent request that contains the image.
+
+The return of this method is the full address of the image that you use to access the image. Note that the return of this method is saved as the address of the image in the database.
+
+Consider this example :
+
+In form
+```php
+<form method="post" action="{{route('uploadImage')}}" enctype="multipart/form-data">
+    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+    <div>
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="imageInput" multiple/>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</form>
+```
+In class or controller method
+```php
+namespace App\Http\Controllers;
+
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+    public function uploadImage(Request $request)
+    {
+        $imgPath = Illustrator::upload($request->imageInput);
+        MyImage::create([
+            'path' => $imgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'successfully']);
+    }
+}
+```

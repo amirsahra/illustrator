@@ -81,8 +81,24 @@ And
 ```php
 composer dump-autoload
 ```
+### The Public Disk
+To use the `public` disk according to the Laravel feature, you need to create a link.
+
+To create the symbolic link, you may use the storage:link Artisan command:
+```php
+php artisan storage:link
+```
+
 
 ## Usage
+
+For example, you have a model name MyImage with these fields
+```php
+  id,
+  path,
+  created_at,
+  updated_at
+```
 
 - ### configs
 In the configuration file, the activation of the options and their default values are determined.
@@ -157,3 +173,154 @@ class HomeController extends Controller
     }
 }
 ```
+
+- ### Directory
+You can enter your directory.
+If you want to use the default directory you specified in the config file, you don't need to use this method.
+
+```php
+namespace App\Http\Controllers;
+
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+    public function uploadImage(Request $request)
+    {
+        $imgPath = Illustrator::setDir('myDirectory/images')->upload($request->imageInput);
+        MyImage::create([
+            'path' => $imgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'successfully']);
+    }
+}
+```
+- ### Name
+Specify the name of the image or by default it will create a random string with the length you specified in the config file.
+
+Note: The name of the image must be without its type and its type is taken from the image file itself, for example, the name `imageName.png` is incorrect
+```php
+namespace App\Http\Controllers;
+
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+    public function uploadImage(Request $request)
+    {
+        $imgPath = Illustrator::setName('imageName')->upload($request->imageInput);
+        MyImage::create([
+            'path' => $imgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'successfully']);
+    }
+}
+```
+
+- ### Disk
+You have two modes for the disk: public and local
+
+If you want to access an image with its address, you must select the disk as public.
+
+If you want the image to be protected and only downloadable, select local disk.
+```php
+namespace App\Http\Controllers;
+
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+    public function uploadImage(Request $request)
+    {
+        $imgPath = Illustrator::setDisk('public')->upload($request->imageInput);
+        MyImage::create([
+            'path' => $imgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'successfully']);
+    }
+}
+```
+To directly access the image at the address where the disk was public when it was saved:
+
+For example
+```php
+<img src="{{asset("storage/myDirectory/images/imageName.png")}}" alt="image" >
+```
+To protected access the image at the address that the disk was local to when it was saved:
+
+For example
+```php
+    Storage::disk('local')->download('myDirectory/images/imageName.png');
+```
+- ### Combination of methods
+
+All methods can be used together, but the upload method must come last
+```php
+namespace App\Http\Controllers;
+
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+    public function uploadImage(Request $request)
+    {
+        $imgPath = Illustrator::setName('imageName')
+            setDir('myDirectory/images')
+            setDisk('public')
+            ->upload($request->imageInput);
+            
+        MyImage::create([
+            'path' => $imgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'successfully']);
+    }
+}
+```
+- ### Upload
+Updating the images is very simple as above and instead of the upload method, you should use the update with the full directory parameter of the image you want to update.
+
+In this way, the current image is deleted and the new image replaces it
+namespace App\Http\Controllers;
+```php
+use Amirsahra\Illustrator\Facade\Illustrator;
+use App\MyImage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
+class HomeController extends Controller
+{
+public function updateImage(Request $request,MyImage $myImage)
+{
+    $newImgPath = Illustrator::setName('imageName')
+        setDir('myDirectory/images')
+        setDisk('public')
+        ->update($request->imageInput,$myImage->path);
+
+        $myImage->update([
+            'path' => $newImgPath
+        ]);
+
+        return Redirect::back()->with(['msg' => 'update image successfully']);
+    }
+}
+```
+# License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+

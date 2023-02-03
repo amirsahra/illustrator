@@ -11,7 +11,7 @@ trait RefactorPath
      * @param string $path
      * @return string
      */
-    protected function refactorPath(string $path): string
+    protected function refactorPath(string $path)
     {
         $newPath = $path;
         if (str_ends_with($newPath, '/'))

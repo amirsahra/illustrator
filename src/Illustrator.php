@@ -39,7 +39,7 @@ class Illustrator
      * @return string
      * @throws InvalidNameException
      */
-    public function upload(UploadedFile $imageInputRequest): string
+    public function upload(UploadedFile $imageInputRequest)
     {
         $imageType = $imageInputRequest->extension();
         $imageName = $this->name . '.' . $imageType;
@@ -54,7 +54,7 @@ class Illustrator
     /**
      * @throws InvalidNameException
      */
-    public function update(UploadedFile $imageInputRequest, string $imagePath): string
+    public function update(UploadedFile $imageInputRequest, string $imagePath)
     {
         if ($this->imageExists($imagePath, $this->disk)) {
             Storage::disk($this->disk)->delete($imagePath);
@@ -62,7 +62,7 @@ class Illustrator
         return $this->upload($imageInputRequest);
     }
 
-    private function imageExists(string $imagePath, string $disk): bool
+    private function imageExists(string $imagePath, string $disk)
     {
         return Storage::disk($disk)->exists($imagePath);
     }

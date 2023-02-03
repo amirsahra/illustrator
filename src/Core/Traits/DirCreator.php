@@ -6,6 +6,7 @@ use Amirsahra\Illustrator\Exception\NotFoundConfigKeyException;
 
 trait DirCreator
 {
+    use RefactorPath;
     /**
      * Image directory value.
      * @var
@@ -40,7 +41,7 @@ trait DirCreator
      */
     public function setDir(string $directory)
     {
-        $this->dir = $directory;
+        $this->dir = $this->refactorPath($directory);
         return $this;
     }
 

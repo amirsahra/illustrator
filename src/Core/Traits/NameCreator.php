@@ -53,7 +53,7 @@ trait NameCreator
      */
     public function setName(string $name)
     {
-        $this->name = $name;
+        $this->name = $this->refactorPath($name);
         return $this;
     }
 
@@ -64,7 +64,7 @@ trait NameCreator
      * @return string
      * @throws NotFoundConfigKeyException
      */
-    private function createRandomString(): string
+    private function createRandomString()
     {
         $randomString = Str::random();
         if ($this->activated('image_path', 'random_string')) {
@@ -81,7 +81,7 @@ trait NameCreator
      * @return string
      * @throws NotFoundConfigKeyException
      */
-    private function createPrefix(): string
+    private function createPrefix()
     {
         $prefix = '';
         if ($this->activated('image_path', 'prefix')) {
@@ -97,7 +97,7 @@ trait NameCreator
      * @return string
      * @throws NotFoundConfigKeyException
      */
-    private function createPostfix(): string
+    private function createPostfix()
     {
         $postfix = '';
         if ($this->activated('image_path', 'postfix')) {

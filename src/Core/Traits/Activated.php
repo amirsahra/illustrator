@@ -16,7 +16,7 @@ trait Activated
      * @return bool
      * @throws NotFoundConfigKeyException
      */
-    private function activated(string $configGroup, string $configKey): bool
+    private function activated(string $configGroup, string $configKey)
     {
         $configGroupArray= config('illustrator.' . $configGroup);
 

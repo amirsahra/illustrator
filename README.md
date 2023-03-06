@@ -257,17 +257,19 @@ class HomeController extends Controller
     }
 }
 ```
-To directly access the image at the address where the disk was public when it was saved:
+### Imag access
+With the address of the image (which is created when uploading) and the type of disk, the image can be accessed correctly.
 
-For example
+If we want the image to be shown on the pages, its disk must be public, and by adding `storage/` to the first of that address, the image will be displayed, as in the following example:
+
 ```php
 <img src="{{asset("storage/myDirectory/images/imageName.png")}}" alt="image" >
 ```
-To protected access the image at the address that the disk was local to when it was saved:
+If we want the image to be protected and can only be downloaded, select its local disk.
 
-For example
+To protected access the image at the address that the disk was local to when it was saved:
 ```php
-    Storage::disk('local')->download('myDirectory/images/imageName.png');
+Storage::disk('local')->download('myDirectory/images/imageName.png');
 ```
 - ### Combination of methods
 

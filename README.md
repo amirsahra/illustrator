@@ -61,7 +61,12 @@ be downloaded securely (such as invoices, transaction lists, and any image that 
 composer require amirsahra/illustrator
 ```
 
-- You need to add the config file to the configs directory. Publish the configuration file:
+- Add the following class to the providers array in `config/app.php`
+```php
+Amirsahra\Illustrator\IllustratorServiceProvider::class,
+```
+
+- You need to add the config file to the config directory. Publish the configuration file:
 
 ```php
 php artisan vendor:publish --tag="illustrator"

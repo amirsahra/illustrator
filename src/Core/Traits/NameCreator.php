@@ -106,4 +106,9 @@ trait NameCreator
         return (string)$postfix;
     }
 
+    private function imageExists(string $imageName)
+    {
+
+    }
+
 }

@@ -43,7 +43,7 @@ class Illustrator
     {
         $imageType = $imageInputRequest->extension();
         $imageName = $this->name . '.' . $imageType;
-        $imagePath = $this->dir . $imageName;
+        $imagePath = $this->dir . '/' . $imageName;
         if ($this->imageExists($imagePath, $this->disk))
             throw new InvalidNameException();
 

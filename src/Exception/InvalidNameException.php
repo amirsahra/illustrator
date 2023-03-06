@@ -6,5 +6,5 @@ use Exception;
 
 class InvalidNameException extends Exception
 {
-    protected $message = 'The selected disk was not found, The selected disk must be supported.';
+    protected $message = 'An image with this name exists in the selected directory. Enter a different name for the image';
 }
